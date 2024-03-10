@@ -78,7 +78,7 @@ services:
       - farroupilha
   bazarr:
     container_name: bazarr
-    image: ghcr.io/hotio/bazarr
+    image: ghcr.io/hotio/bazarr:latest
     restart: unless-stopped
     ports:
       - "6767:6767"
