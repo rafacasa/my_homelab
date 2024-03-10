@@ -1,0 +1,96 @@
+name: arr_suite
+
+services:
+  sonarr:
+    container_name: sonarr
+    image: ghcr.io/hotio/sonarr:latest
+    restart: unless-stopped
+    ports:
+      - 8989:8989
+    env_file:
+      - ./baseline.env
+    networks:
+      - farroupilha
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /dockerconfigs/sonarr:/config
+      - /mnt/mediadata:/data
+  prowlarr:
+    container_name: prowlarr
+    image: ghcr.io/hotio/prowlarr:latest
+    restart: unless-stopped
+    ports:
+      - 9696:9696
+    env_file:
+      - ./baseline.env
+    networks:
+      - farroupilha
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /dockerconfigs/prowlarr:/config
+  qbittorrent:
+    container_name: qbittorrent
+    image: ghcr.io/hotio/qbittorrent:latest
+    restart: unless-stopped
+    ports:
+      - "8050:8080"
+    env_file:
+      - ./baseline.env
+      - ./qbittorrent.env
+      - ./qbittorrent_secrets.env
+    cap_add:
+      - NET_ADMIN
+    sysctls:
+      - net.ipv4.conf.all.src_valid_mark=1
+      - net.ipv6.conf.all.disable_ipv6=1
+    networks:
+      - farroupilha
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /dockerconfigs/qbittorrent:/config
+      - /mnt/mediadata/torrents:/data/torrents
+  jellyfin:
+    container_name: jellyfin
+    image: ghcr.io/hotio/jellyfin:latest
+    restart: unless-stopped
+    ports:
+      - "8096:8096"
+    env_file:
+      - ./baseline.env
+      - ./jellyfin.env
+    networks:
+      - farroupilha
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /dockerconfigs/jellyfin:/config
+      - /mnt/mediadata/media:/data/media
+      - /mnt/mediadata/torrents/torrentleech:/torrentstl
+  flaresolverr:
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    container_name: flaresolverr
+    env_file:
+      - ./baseline.env
+      - ./flaresolverr.env
+    ports:
+      - "8191:8191"
+    restart: unless-stopped
+    networks:
+      - farroupilha
+  bazarr:
+    container_name: bazarr
+    image: ghcr.io/hotio/bazarr
+    restart: unless-stopped
+    ports:
+      - "6767:6767"
+    env_file:
+      - ./baseline.env
+      - ./bazarr.env
+    networks:
+      - farroupilha
+    volumes:
+      - /dockerconfigs/bazarr:/config
+      - /mnt/mediadata/media:/data/media
+
+networks:
+  farroupilha:
+    external: true
