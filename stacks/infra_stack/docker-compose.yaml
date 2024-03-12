@@ -1,0 +1,42 @@
+services:
+  registry:
+    image: registry:2
+    restart: unless-stopped
+    container_name: registry
+    ports:
+      - 5010:5000
+    networks:
+      - farroupilha
+    volumes:
+      - /dockerconfig/infra_stack/registry:/var/lib/registry
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--tries=1", "--spider", "http://localhost:5000/v2"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 1m
+
+  npm:
+    image: 'jc21/nginx-proxy-manager:latest'
+    container_name: 'npm'
+    restart: unless-stopped
+    ports:
+      - '80:80' # Public HTTP Port
+      - '443:443' # Public HTTPS Port
+      - '81:81' # Admin Web Port
+    env_file:
+      - ./npm.env
+    volumes:
+      - /dockerconfigs/infra_stack/npm:/data
+      - /etc/letsencrypt:/etc/letsencrypt
+    networks:
+      - farroupilha
+    healthcheck:
+      test: ["CMD", "/usr/bin/check-health"]
+      interval: 10s
+      timeout: 3s
+      
+#TODO - Adicionar Watchtower
+networks:
+  farroupilha:
+    external: true

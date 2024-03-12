@@ -1,5 +1,5 @@
 name: arr_suite
-
+#TODO mover mount point para pasta da stack
 services:
   sonarr:
     container_name: sonarr
