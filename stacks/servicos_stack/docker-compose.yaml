@@ -23,6 +23,19 @@ services:
     networks:
       - farroupilha
 
+  filestash:
+    container_name: filestash
+    image: machines/filestash
+    restart: unless-stopped
+    environment:
+      - APPLICATION_URL=
+    ports:
+      - "8334:8334"
+    volumes:
+      - /dockerconfig/servicos_stack/filestash:/app/data/state/
+      - /home/dockerserver:/home/dockerserver 
+    networks:
+      - farroupilha
 
 networks:
   farroupilha:
