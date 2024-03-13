@@ -1,0 +1,17 @@
+name: own_code
+
+services:
+  frigate_ntfy:
+    image: localhost:5010/rafacasa/frigate-ntfy:latest
+    container_name: frigate-ntfy
+    restart: unless-stopped
+    env_file:
+      - ./frigate_ntfy.env
+      - ./frigate_ntfy_secrets.env
+    networks:
+      - farroupilha
+
+
+networks:
+  farroupilha:
+    external: true
