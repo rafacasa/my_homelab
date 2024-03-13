@@ -23,6 +23,42 @@ services:
     networks:
       - farroupilha
 
+  filestash:
+    container_name: filestash
+    image: machines/filestash
+    restart: unless-stopped
+    environment:
+      - APPLICATION_URL=
+    ports:
+      - "8334:8334"
+    volumes:
+      - /dockerconfig/servicos_stack/filestash:/app/data/state/
+      - /home/dockerserver:/home/dockerserver 
+    networks:
+      - farroupilha
+  
+  your_spotify_server:
+    image: yooooomi/your_spotify_server
+    container_name: your_spotify_server
+    restart: unless-stopped
+    ports:
+      - "8085:8080"
+    env_file:
+      - ./your_spotify.env
+      - ./your_spotify_server_secrets.env
+    networks:
+      - farroupilha
+
+  your_spotify_web:
+    image: yooooomi/your_spotify_client
+    container_name: your_spotify_client
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./your_spotify.env
+    networks:
+      - farroupilha
 
 networks:
   farroupilha:

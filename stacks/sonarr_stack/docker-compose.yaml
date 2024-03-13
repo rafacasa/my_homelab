@@ -89,6 +89,22 @@ services:
     volumes:
       - /dockerconfigs/sonarr_stack/bazarr:/config
       - /mnt/mediadata/media:/data/media
+  homarr:
+    container_name: homarr
+    image: ghcr.io/ajnart/homarr:latest
+    restart: unless-stopped
+    env_file:
+      - ./baseline.env
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock # Optional, only if you want docker integration
+      - /dockerconfigs/sonarr_stack/homarr/configs:/app/data/configs
+      - /dockerconfigs/sonarr_stack/homarr/icons:/app/public/icons
+      - /dockerconfigs/sonarr_stack/homarr/data:/data
+    ports:
+      - '7575:7575'
+    networks:
+      - farroupilha
+
 
 networks:
   farroupilha:
