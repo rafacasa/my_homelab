@@ -1,0 +1,29 @@
+name: sistemas_gerais
+
+services:
+  linkding:
+    image: sissbruecker/linkding:latest
+    container_name: linkding
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    volumes:
+      - /dockerconfig/servicos_stack/linkding:/etc/linkding/data
+    networks:
+      - farroupilha
+  
+  asf:
+    image: justarchi/archisteamfarm:latest
+    container_name: archisteamfarm
+    restart: unless-stopped
+    ports:
+      - "1242:1242"
+    volumes:
+      - /dockerconfig/servicos_stack/asf:/app/config
+    networks:
+      - farroupilha
+
+
+networks:
+  farroupilha:
+    external: true
