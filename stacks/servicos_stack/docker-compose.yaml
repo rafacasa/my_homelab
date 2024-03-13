@@ -1,0 +1,18 @@
+name: sistemas_gerais
+
+services:
+  linkding:
+    image: sissbruecker/linkding:latest
+    container_name: linkding
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    volumes:
+      - /dockerconfig/servicos_stack/linkding:/etc/linkding/data
+    networks:
+      - farroupilha
+
+
+networks:
+  farroupilha:
+    external: true
