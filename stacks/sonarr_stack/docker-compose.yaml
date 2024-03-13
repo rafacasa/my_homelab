@@ -15,6 +15,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /dockerconfigs/sonarr_stack/sonarr:/config
       - /mnt/mediadata:/data
+
   prowlarr:
     container_name: prowlarr
     image: ghcr.io/hotio/prowlarr:latest
@@ -28,6 +29,7 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /dockerconfigs/sonarr_stack/prowlarr:/config
+
   qbittorrent:
     container_name: qbittorrent
     image: ghcr.io/hotio/qbittorrent:latest
@@ -49,6 +51,29 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /dockerconfigs/sonarr_stack/qbittorrent:/config
       - /mnt/mediadata/torrents:/data/torrents
+
+  qbittorrent_private:
+    container_name: qbittorrent_private
+    image: ghcr.io/hotio/qbittorrent:latest
+    restart: unless-stopped
+    ports:
+      - "8010:8080"
+    env_file:
+      - ./baseline.env
+      - ./qbittorrent.env
+      - ./qbittorrent_private_secrets.env
+    cap_add:
+      - NET_ADMIN
+    sysctls:
+      - net.ipv4.conf.all.src_valid_mark=1
+      - net.ipv6.conf.all.disable_ipv6=1
+    networks:
+      - farroupilha
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /dockerconfigs/sonarr_stack/qbittorrent_private:/config
+      - /mnt/mediadata/torrents:/data/torrents
+
   jellyfin:
     container_name: jellyfin
     image: ghcr.io/hotio/jellyfin:latest
@@ -64,6 +89,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /dockerconfigs/sonarr_stack/jellyfin:/config
       - /mnt/mediadata/media:/data/media
+
   flaresolverr:
     image: ghcr.io/flaresolverr/flaresolverr:latest
     container_name: flaresolverr
@@ -75,6 +101,7 @@ services:
     restart: unless-stopped
     networks:
       - farroupilha
+
   bazarr:
     container_name: bazarr
     image: ghcr.io/hotio/bazarr:latest
@@ -89,6 +116,7 @@ services:
     volumes:
       - /dockerconfigs/sonarr_stack/bazarr:/config
       - /mnt/mediadata/media:/data/media
+
   homarr:
     container_name: homarr
     image: ghcr.io/ajnart/homarr:latest
@@ -96,7 +124,7 @@ services:
     env_file:
       - ./baseline.env
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock # Optional, only if you want docker integration
+      - /var/run/docker.sock:/var/run/docker.sock
       - /dockerconfigs/sonarr_stack/homarr/configs:/app/data/configs
       - /dockerconfigs/sonarr_stack/homarr/icons:/app/public/icons
       - /dockerconfigs/sonarr_stack/homarr/data:/data
