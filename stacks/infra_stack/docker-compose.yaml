@@ -35,6 +35,19 @@ services:
       test: ["CMD", "/usr/bin/check-health"]
       interval: 10s
       timeout: 3s
+
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: portainer
+    ports:
+      - "8000:8000"
+      - "9443:9443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /dockerconfigs/infra_stack/portainer:/data
+    networks:
+      - farroupilha
+    restart: always
       
 #TODO - Adicionar Watchtower
 networks:
