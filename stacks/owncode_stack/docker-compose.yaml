@@ -11,6 +11,12 @@ services:
     networks:
       - farroupilha
 
+  musicbot:
+    image: localhost:5010/rafacasa/musicbot
+    container_name: musicbot
+    restart: unless-stopped
+    networks:
+      - farroupilha
 
 networks:
   farroupilha:
