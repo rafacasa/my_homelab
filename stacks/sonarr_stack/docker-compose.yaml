@@ -49,6 +49,27 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /dockerconfigs/sonarr_stack/qbittorrent:/config
       - /mnt/mediadata/torrents:/data/torrents
+  qbittorrent_private:
+    container_name: qbittorrent_private
+    image: ghcr.io/hotio/qbittorrent:latest
+    restart: unless-stopped
+    ports:
+      - "8010:8080"
+    env_file:
+      - ./baseline.env
+      - ./qbittorrent.env
+      - ./qbittorrent_private_secrets.env
+    cap_add:
+      - NET_ADMIN
+    sysctls:
+      - net.ipv4.conf.all.src_valid_mark=1
+      - net.ipv6.conf.all.disable_ipv6=1
+    networks:
+      - farroupilha
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /dockerconfigs/sonarr_stack/qbittorrent_private:/config
+      - /mnt/mediadata/torrents:/data/torrents
   jellyfin:
     container_name: jellyfin
     image: ghcr.io/hotio/jellyfin:latest
