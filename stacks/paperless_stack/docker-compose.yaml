@@ -1,0 +1,65 @@
+name: paperless_stack
+
+services:
+  broker:
+    image: docker.io/library/redis:7
+    container_name: paperless-redis
+    restart: unless-stopped
+    user: 1000:1000
+    networks:
+      - farroupilha
+    volumes:
+      - /dockerconfig/paperless_stack/redis:/data
+
+  db:
+    image: docker.io/library/postgres:15
+    container_name: paperless-postgres
+    restart: unless-stopped
+    user: 1000:1000
+    networks:
+      - farroupilha
+    volumes:
+      - /dockerconfig/paperless_stack/postgres:/var/lib/postgresql/data
+    env_file: 
+      - ./db_secrets.env
+
+  webserver:
+    image: ghcr.io/paperless-ngx/paperless-ngx:latest
+    container_name: paperless-server
+    restart: unless-stopped
+    depends_on:
+      - db
+      - broker
+    ports:
+      - "8080:8000"
+    networks:
+      - farroupilha
+    volumes:
+      - /dockerconfig/paperless_stack/paperless:/usr/src/paperless/data
+      - media:/usr/src/paperless/media
+      - consume:/usr/src/paperless/consume
+      - export:/usr/src/paperless/export
+    env_file: 
+      - ./paperless.env
+      - ./paperless_secrets.env
+
+volumes:
+  export:
+
+  media:
+    driver: local
+    driver_opts:
+      type: cifs
+      device: "//x.x.x.x/documentos"
+      o: "username=x,password=x,uid=1000,gid=1000"
+
+  consume:
+    driver: local
+    driver_opts:
+      type: cifs
+      device: "//x.x.x.x/paperless-import"
+      o: "username=x,password=x,uid=1000,gid=1000"
+
+networks:
+  farroupilha:
+    external: true
