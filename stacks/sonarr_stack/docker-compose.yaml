@@ -1,5 +1,5 @@
 name: arr_suite
-#TODO mover mount point para pasta da stack
+
 services:
   sonarr:
     container_name: sonarr
@@ -13,7 +13,7 @@ services:
       - farroupilha
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - /dockerconfigs/sonarr:/config
+      - /dockerconfigs/sonarr_stack/sonarr:/config
       - /mnt/mediadata:/data
   prowlarr:
     container_name: prowlarr
@@ -27,7 +27,7 @@ services:
       - farroupilha
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - /dockerconfigs/prowlarr:/config
+      - /dockerconfigs/sonarr_stack/prowlarr:/config
   qbittorrent:
     container_name: qbittorrent
     image: ghcr.io/hotio/qbittorrent:latest
@@ -47,7 +47,7 @@ services:
       - farroupilha
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - /dockerconfigs/qbittorrent:/config
+      - /dockerconfigs/sonarr_stack/qbittorrent:/config
       - /mnt/mediadata/torrents:/data/torrents
   jellyfin:
     container_name: jellyfin
@@ -62,9 +62,8 @@ services:
       - farroupilha
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - /dockerconfigs/jellyfin:/config
+      - /dockerconfigs/sonarr_stack/jellyfin:/config
       - /mnt/mediadata/media:/data/media
-      - /mnt/mediadata/torrents/torrentleech:/torrentstl
   flaresolverr:
     image: ghcr.io/flaresolverr/flaresolverr:latest
     container_name: flaresolverr
@@ -88,7 +87,7 @@ services:
     networks:
       - farroupilha
     volumes:
-      - /dockerconfigs/bazarr:/config
+      - /dockerconfigs/sonarr_stack/bazarr:/config
       - /mnt/mediadata/media:/data/media
 
 networks:
