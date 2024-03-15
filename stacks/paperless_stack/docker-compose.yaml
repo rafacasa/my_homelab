@@ -35,17 +35,15 @@ services:
     networks:
       - farroupilha
     volumes:
-      - /dockerconfig/paperless_stack/paperless:/usr/src/paperless/data
+      - /dockerconfig/paperless_stack/paperless/data:/usr/src/paperless/data
       - media:/usr/src/paperless/media
       - consume:/usr/src/paperless/consume
-      - export:/usr/src/paperless/export
+      - /dockerconfig/paperless_stack/paperless/export:/usr/src/paperless/export
     env_file: 
       - ./paperless.env
       - ./paperless_secrets.env
 
 volumes:
-  export:
-
   media:
     driver: local
     driver_opts:
