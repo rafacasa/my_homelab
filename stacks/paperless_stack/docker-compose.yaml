@@ -9,7 +9,7 @@ services:
     networks:
       - farroupilha
     volumes:
-      - /dockerconfig/paperless_stack/redis:/data
+      - /dockerconfigs/paperless_stack/redis:/data
 
   db:
     image: docker.io/library/postgres:15
@@ -19,7 +19,7 @@ services:
     networks:
       - farroupilha
     volumes:
-      - /dockerconfig/paperless_stack/postgres:/var/lib/postgresql/data
+      - /dockerconfigs/paperless_stack/postgres:/var/lib/postgresql/data
     env_file: 
       - ./db_secrets.env
 
@@ -35,10 +35,10 @@ services:
     networks:
       - farroupilha
     volumes:
-      - /dockerconfig/paperless_stack/paperless/data:/usr/src/paperless/data
+      - /dockerconfigs/paperless_stack/paperless/data:/usr/src/paperless/data
       - media:/usr/src/paperless/media
       - consume:/usr/src/paperless/consume
-      - /dockerconfig/paperless_stack/paperless/export:/usr/src/paperless/export
+      - /dockerconfigs/paperless_stack/paperless/export:/usr/src/paperless/export
     env_file: 
       - ./paperless.env
       - ./paperless_secrets.env

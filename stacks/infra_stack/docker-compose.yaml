@@ -8,7 +8,7 @@ services:
     networks:
       - farroupilha
     volumes:
-      - /dockerconfig/infra_stack/registry:/var/lib/registry
+      - /dockerconfigs/infra_stack/registry:/var/lib/registry
     healthcheck:
       test: ["CMD", "wget", "-q", "--tries=1", "--spider", "http://localhost:5000/v2"]
       interval: 30s
