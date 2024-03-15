@@ -19,7 +19,8 @@ services:
     ports:
       - "1242:1242"
     volumes:
-      - /dockerconfig/servicos_stack/asf:/app/config
+      - /dockerconfig/servicos_stack/asf/config:/app/config
+      - /dockerconfig/servicos_stack/asf/logs:/app/logs
     networks:
       - farroupilha
 
