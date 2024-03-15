@@ -8,7 +8,7 @@ services:
     ports:
       - "9090:9090"
     volumes:
-      - /dockerconfig/servicos_stack/linkding:/etc/linkding/data
+      - /dockerconfigs/servicos_stack/linkding:/etc/linkding/data
     networks:
       - farroupilha
   
@@ -19,8 +19,8 @@ services:
     ports:
       - "1242:1242"
     volumes:
-      - /dockerconfig/servicos_stack/asf/config:/app/config
-      - /dockerconfig/servicos_stack/asf/logs:/app/logs
+      - /dockerconfigs/servicos_stack/asf/config:/app/config
+      - /dockerconfigs/servicos_stack/asf/logs:/app/logs
     networks:
       - farroupilha
 
@@ -33,7 +33,7 @@ services:
     ports:
       - "8334:8334"
     volumes:
-      - /dockerconfig/servicos_stack/filestash:/app/data/state/
+      - /dockerconfigs/servicos_stack/filestash:/app/data/state/
       - /home/dockerserver:/home/dockerserver 
     networks:
       - farroupilha
