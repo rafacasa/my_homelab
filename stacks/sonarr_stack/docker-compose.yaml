@@ -16,6 +16,21 @@ services:
       - /dockerconfigs/sonarr_stack/sonarr:/config
       - /mnt/mediadata:/data
 
+  radarr:
+    container_name: radarr
+    image: ghcr.io/hotio/radarr:latest
+    restart: unless-stopped
+    ports:
+      - 7878:7878
+    env_file:
+      - ./baseline.env
+    networks:
+      - farroupilha
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /dockerconfigs/sonarr_stack/radarr:/config
+      - /mnt/mediadata:/data
+
   prowlarr:
     container_name: prowlarr
     image: ghcr.io/hotio/prowlarr:latest
