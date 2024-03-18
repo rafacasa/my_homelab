@@ -10,7 +10,7 @@ services:
     networks:
       - farroupilha
     ports:
-      - 8010:80
+      - 8020:80
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /dockerconfigs/vaultwarden_stack/vaultwarden_data:/data
