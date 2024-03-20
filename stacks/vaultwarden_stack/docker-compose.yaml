@@ -1,0 +1,21 @@
+name: vaultwarden_stack
+
+services:
+  vaultwarden:
+    container_name: vaultwarden
+    image: vaultwarden/server:latest
+    restart: always
+    env_file:
+      - ./vaultwarden.env
+      - ./vaultwarden_secrets.env
+    networks:
+      - farroupilha
+    ports:
+      - 8020:80
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /dockerconfigs/vaultwarden_stack/vaultwarden_data:/data
+
+networks:
+  farroupilha:
+    external: true
